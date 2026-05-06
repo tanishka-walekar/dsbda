@@ -1,0 +1,49 @@
+import nltk # Imports the NLTK library used for text processing.
+from nltk.tokenize import word_tokenize # Imports word_tokenize() function.Used to split sentence into words/tokens.
+from nltk.corpus import stopwords # Imports English stopwords like is, the, and, from.
+from nltk.stem import PorterStemmer, WordNetLemmatizer # PorterStemmer() → used for stemming.WordNetLemmatizer() → used for lemmatization.
+from nltk import pos_tag # Imports pos_tag() function.Used for Part of Speech tagging (noun, verb, adjective, etc.).
+from sklearn.feature_extraction.text import TfidfVectorizer # Imports TF-IDF vectorizer from Scikit-learn.Used to calculate TF and IDF values.
+
+# Download required files
+nltk.download('punkt') # Downloads tokenizer data required for tokenization.
+nltk.download('stopwords') # Downloads stopword dataset.
+nltk.download('averaged_perceptron_tagger') # Downloads model used for POS tagging.
+nltk.download('wordnet') # Downloads WordNet dictionary for lemmatization.
+
+# Sample text
+# Stores sample sentence in variable text.
+text = "Data Analytics is useful for extracting important information from data."
+# Tokenization
+# Splits sentence into individual words.
+tokens = word_tokenize(text)
+print("Tokens:", tokens)
+
+# POS Tagging
+# Assigns grammar tags to each word.
+print("\nPOS Tags:", pos_tag(tokens))
+
+# Stopword Removal
+stop_words = set(stopwords.words('english')) # Loads English stopwords into a set.
+filtered = [w for w in tokens if w.lower() not in stop_words] # Removes stopwords from tokens.Keeps only important words.
+print("\nAfter Stopword Removal:", filtered)
+
+# Stemming
+ps = PorterStemmer() # Creates stemming object.
+stemmed = [ps.stem(w) for w in filtered] # Converts words to root form.
+print("\nStemmed Words:", stemmed)
+
+# Lemmatization
+lm = WordNetLemmatizer() # Creates lemmatizer object.
+lemmatized = [lm.lemmatize(w) for w in filtered] # Converts words into meaningful base form.
+print("\nLemmatized Words:", lemmatized)
+
+# TF-IDF
+docs = [text] # Creates list of documents.
+vectorizer = TfidfVectorizer() # Creates TF-IDF vectorizer object.
+tfidf = vectorizer.fit_transform(docs) # Calculates TF-IDF values for words.fit() → learns vocabulary.
+# transform() → converts text into numeric TF-IDF values.
+
+print("\nTF-IDF Values:") # Prints heading.
+print(vectorizer.get_feature_names_out()) # Displays words/features used in TF-IDF.
+print(tfidf.toarray()) # Converts TF-IDF matrix into array and prints values.
