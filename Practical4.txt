@@ -1,0 +1,48 @@
+import pandas as pd 
+# Imports function to split dataset into training and testing sets.
+from sklearn.model_selection import train_test_split
+# Imports Linear Regression model from scikit-learn.
+from sklearn.linear_model import LinearRegression
+# Used to load datasets from OpenML, here Boston dataset.
+from sklearn.datasets import fetch_openml
+# Imports evaluation metrics:MSE (Mean Squared Error) → error measurement
+# R² Score → model accuracy
+from sklearn.metrics import mean_squared_error, r2_score
+
+# Loads the Boston Housing dataset.
+# as_frame=True → returns data as Pandas DataFrame.
+boston = fetch_openml(name='boston', version=1, as_frame=True)
+# Stores dataset into DataFrame df.
+df = boston.frame
+
+# Converts all columns into numeric values ,If any invalid value exists → converts it to NaN
+df = df.apply(pd.to_numeric, errors='coerce')
+# Removes rows containing NaN values ,Ensures clean dataset for model training
+df = df.dropna()
+
+# Features and target
+# MEDV = target variable (house price)
+# X → all input features (independent variables)
+# y → output (dependent variable / price)
+X = df.drop('MEDV', axis=1)   
+y = df['MEDV']
+
+# Train-test split
+# Splits data into: 80% training data,20% testing data ,random_state=42 → ensures same split every time
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Model
+# Creates a Linear Regression model object
+model = LinearRegression()
+# Model learns relationship between features and house price
+model.fit(X_train, y_train)
+
+# Prediction
+# Uses trained model to predict house prices for test data
+y_pred = model.predict(X_test)
+
+# Evaluation
+# MSE (Mean Squared Error):Measures average squared difference between actual and predicted values,Lower value = better model
+print("MSE:", mean_squared_error(y_test, y_pred))
+# R² Score (Accuracy of regression model): Range: 0 to 1 (or negative if very bad model),Closer to 1 = better performance,Shows how well model explains data
+print("R2 Score:", r2_score(y_test, y_pred))

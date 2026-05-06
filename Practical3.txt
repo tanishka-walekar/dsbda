@@ -1,0 +1,29 @@
+import pandas as pd
+# Load data
+df = pd.read_csv("iris.csv")
+df
+df.head()
+# Basic statistics
+df.mean(numeric_only=True)
+
+df.median(numeric_only=True)
+
+df.min(numeric_only=True)
+
+df.max(numeric_only=True)
+
+df.var(numeric_only=True)
+df.std(numeric_only=True)
+group = df.groupby('Species')
+
+group.mean()
+
+group.median()
+group.min()
+group.max()
+group.var()
+group.std()
+# Overall summary
+df.describe()
+# Species-wise summary
+group.describe()

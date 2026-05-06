@@ -1,0 +1,27 @@
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+df = pd.read_csv("titanic1.csv")
+
+# 1. Boxplot for numeric feature (Age)
+# A boxplot is used to show: Data distribution ,Median (middle value) ,Spread of data ,Outliers (extreme values)
+sns.boxplot(x=df['Age'])
+plt.title("Boxplot of Age")
+plt.show()
+
+# 2. Compare Age vs Gender vs Survival
+# This compares 3 variables together: Sex → male/female ,Age → numerical data ,Survived → 0 or 1 (hue split)
+sns.boxplot(x='Sex', y='Age', hue='Survived', data=df)
+plt.title("Age vs Gender vs Survival")
+plt.show()
+
+# 3. Identify outliers in Age
+Q1 = df['Age'].quantile(0.25)
+Q3 = df['Age'].quantile(0.75)
+# IQR = middle 50% of data spread ( Interquartile range)
+IQR = Q3 - Q1
+
+outliers = df[(df['Age'] < Q1 - 1.5*IQR) | (df['Age'] > Q3 + 1.5*IQR)]
+# Counts how many passengers have abnormal ages
+print("Number of outliers in Age:", len(outliers))

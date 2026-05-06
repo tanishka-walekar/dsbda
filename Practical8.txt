@@ -1,0 +1,38 @@
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+df = pd.read_csv("titanic1.csv")
+df.head()
+
+# Check columns (important step)
+df.columns
+
+# 1. Identify patterns using Seaborn (Survival vs Gender)
+# A countplot is used to show the number of occurrences in each category.
+# Creates bar chart: X-axis → Survived (0 = No, 1 = Yes)
+# Hue → Gender (Male/Female)
+# Shows how survival depends on gender.
+sns.countplot(x='Survived', hue='Sex', data=df)
+plt.title("Survival Count by Gender")
+plt.show()
+
+# 2. Histogram for Fare distribution
+# A histogram shows how numerical data is distributed.
+# KDE (Kernel Density Estimate)-kde=True adds a smooth curve
+# It shows overall shape of distribution
+sns.histplot(df['Fare'], kde=True)
+plt.title("Fare Distribution")
+plt.show()
+
+# 3. Skewness
+# Calculates skewness of Fare column: Tells if data is left/right skewed or balanced.
+print("Skewness of Fare:", df['Fare'].skew())
+
+# 4. Simple Analysis
+if df['Fare'].skew() > 0:
+    print("Fare is Positively Skewed (Right Skewed)")
+elif df['Fare'].skew() < 0:
+    print("Fare is Negatively Skewed (Left Skewed)")
+else:
+    print("Fare is Symmetric")

@@ -1,0 +1,36 @@
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Load dataset
+df = pd.read_csv("iris.csv")
+df
+
+df.columns
+df = df.drop('Id', axis=1)
+
+# 1. Identify feature types
+print("Feature Types:")
+print(df.dtypes)
+
+# Shows distribution of numerical data ,Each column gets its own graph
+df.hist(figsize=(10,8))
+plt.suptitle('Histogram')
+plt.show()
+
+# boxplot Shows:Median ,Spread ,Outliers
+sns.boxplot(data=df)
+plt.title('Boxplot')
+plt.show()
+
+# Comparison of sepal length across flower species: Setosa ,Versicolor ,Virginica
+sns.boxplot(x='Species', y='SepalLengthCm', data=df)
+plt.show()
+
+# Compares petal length across species
+sns.boxplot(x='Species', y='PetalLengthCm', data=df)
+plt.show()
+
+# Compares petal width across species
+sns.boxplot(x='Species', y='PetalWidthCm', data=df)
+plt.show()

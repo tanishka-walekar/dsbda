@@ -1,0 +1,58 @@
+import pandas as pd
+# Splits dataset into training and testing parts.
+from sklearn.model_selection import train_test_split
+# Imports Gaussian Naive Bayes model (used for classification problems like Iris dataset).
+from sklearn.naive_bayes import GaussianNB
+# Confusion Matrix → shows correct/incorrect predictions
+# Accuracy → overall correctness
+# Precision → correctness of positive predictions
+# Recall → how many actual positives are correctly predicted
+from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score
+
+# Load dataset
+df = pd.read_csv("iris.csv")
+
+# Split features and target
+# X = input features (sepal length, sepal width, petal length, petal width)
+# 'species' column is removed because it is the output label
+X = df.drop('Species', axis=1)
+# y = target column (flower species)
+y = df['Species']
+
+# Train-test split
+# Splits data:80% training data (model learns here) ,20% testing data (model is evaluated here) ,random_state=42 → ensures same split every time
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Creates Naive Bayes classifier model.
+model = GaussianNB()
+model.fit(X_train, y_train)
+
+# Predicts species for test dataset.
+y_pred = model.predict(X_test)
+
+# Confusion Matrix
+# Shows prediction results in matrix form: Rows = actual values ,Columns = predicted values
+# Helps see correct vs incorrect predictions clearly
+cm = confusion_matrix(y_test, y_pred)
+print("Confusion Matrix:\n", cm)
+
+# Accuracy
+# Measures how many predictions are correct overall.
+acc = accuracy_score(y_test, y_pred)
+print("Accuracy:", acc)
+
+# Error Rate
+# Measures wrong predictions percentage.
+error = 1 - acc
+print("Error Rate:", error)
+
+# Precision
+# Measures how many predicted results are actually correct.
+# macro → averages precision across all classes equally.
+precision = precision_score(y_test, y_pred, average='macro')
+print("Precision:", precision)
+
+# Recall
+# Measures how many actual class samples were correctly identified.
+recall = recall_score(y_test, y_pred, average='macro')
+print("Recall:", recall)
