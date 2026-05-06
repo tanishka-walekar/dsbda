@@ -1,0 +1,24 @@
+# Practical No 1
+
+import pandas as pd
+import numpy as np
+df = pd.read_csv("titanic1.csv")
+df
+
+df.head()
+df.info()
+df.describe()
+df.isnull().sum()
+
+df.shape
+
+df.dtypes
+# Convert to category first
+df['Sex'] = df['Sex'].astype('category')
+df
+# Then convert to numeric
+df['Sex'] = df['Sex'].cat.codes
+df
+df = pd.get_dummies(df, columns=['Embarked'], dtype=int)
+df
+df.head()
